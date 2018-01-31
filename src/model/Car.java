@@ -25,7 +25,7 @@ public class Car extends GameObject {
     //car constants
     private final double ROLLINGRESISTANCETROAD = 0.015;
 
-    private final double ROLLINGRESISTANCEDIRT = 0.01;
+    private final double ROLLINGRESISTANCEDIRT = 1;
     private final double ROLLINGRESISTANCECONST = 9.81;
     private final double AIRRESISTANCECONST = 0.28 * 2.19 * 0.5 * 1.2041;
     private final double MASS = 1000;
@@ -35,18 +35,20 @@ public class Car extends GameObject {
     private Subsoil subsoil;
 
 
-    private Image texture = new Image("resources/images/car.png");
-    ;
-    private Image brokenTexture = new Image("resources/images/explode.png");
+    private Image texture;
+
+    private Image brokenTexture;
 
     public Car(double x, double y, double width, double height, double currentAngle, double accelerateConst, double maxSpeed, double maxBackSpeed) throws IllegalArgumentException {
         super(x, y, width, height, currentAngle);
+        texture = new Image("resources/images/car.png");
+        brokenTexture = new Image("resources/images/explode.png");
         setFill(new ImagePattern(texture));
         startAngle = currentAngle;
 
         this.accelerateConst = accelerateConst;
         this.maxSpeed = maxSpeed;
-        this.maxBackSpeed = maxBackSpeed;
+        this.maxBackSpeed = maxBackSpeed * -1;
 
 
         subsoil = Subsoil.GRAS;
@@ -63,15 +65,19 @@ public class Car extends GameObject {
      * calculates new Speed
      * uses AirResistance and Rolling Resistance
      */
-    public void accelerate(double timeDifferenceInSecconds) {
+    public void accelerate(double timeDifferenceInSecconds, boolean forward) {
         calculatesRealSpeed(timeDifferenceInSecconds);
         virtualSpeed = currentSpeed;
-        virtualSpeed = virtualSpeed + accelerateConst * timeDifferenceInSecconds;
-        if (virtualSpeed >= maxSpeed) {
-            virtualSpeed = maxSpeed;
-        }
-        if (virtualSpeed <= maxBackSpeed) {
-            virtualSpeed = maxBackSpeed;
+        if (forward) {
+            virtualSpeed = virtualSpeed + accelerateConst * timeDifferenceInSecconds;
+            if (virtualSpeed >= maxSpeed) {
+                virtualSpeed = maxSpeed;
+            }
+        } else {
+            virtualSpeed = virtualSpeed - accelerateConst * timeDifferenceInSecconds;
+            if (virtualSpeed <= maxBackSpeed) {
+                virtualSpeed = maxBackSpeed;
+            }
         }
 
 
@@ -88,7 +94,7 @@ public class Car extends GameObject {
     public void breakCar(double timeDifferenceInSeconds) {
         virtualSpeed = currentSpeed;
         if (virtualSpeed <= 0) {
-            accelerate(-timeDifferenceInSeconds);
+            accelerate(timeDifferenceInSeconds, false);
         } else {
             virtualSpeed = virtualSpeed - breakConst * timeDifferenceInSeconds;
         }
@@ -259,5 +265,16 @@ public class Car extends GameObject {
         setAngle(startAngle);
     }
 
+    public double getVirtualSpeed() {
+        return virtualSpeed;
+    }
 
+    public void setVirtualSpeed(double speed) {
+        virtualSpeed = speed;
+    }
+
+    public void setSpeed(double speed) {
+        virtualSpeed = speed;
+        currentSpeed = speed;
+    }
 }

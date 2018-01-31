@@ -48,25 +48,7 @@ public abstract class GameObject extends Rectangle {
         center = new Point2D(x + width / 2, y + height / 2);
     }
 
-    /**
-     * Creates a new instance of Rectangle with the given position and size.
-     *
-     * @param x              horizontal position of the rectangle
-     * @param y              vertical position of the rectangle
-     * @param width          width of the rectangle
-     * @param height         height of the rectangle
-     * @param originIsCenter true if the position should be the center of the shape
-     */
-    protected GameObject(double x, double y, double width, double height, boolean originIsCenter) {
-        super(x, y, width, height);
 
-        if (originIsCenter) {
-            center = new Point2D(x, y);
-            move(-width / 2, -height / 2);
-        } else {
-            center = new Point2D(x + width / 2, y + height / 2);
-        }
-    }
 
     /**
      * Creates a new instance of Rectangle with the given position and size.
@@ -84,43 +66,6 @@ public abstract class GameObject extends Rectangle {
         this.rotate(angle);
     }
 
-    /**
-     * Creates a new instance of GameObject with the given position and size.
-     * Also sets a fill color and angle
-     *
-     * @param x         horizontal position of the rectangle
-     * @param y         vertical position of the rectangle
-     * @param width     width of the rectangle
-     * @param height    height of the rectangle
-     * @param angle     rotation angle of the rectangle
-     * @param fillColor fillColor of the rectangle
-     */
-    protected GameObject(double x, double y, double width, double height, double angle, Color fillColor) {
-        super(x, y, width, height);
-        center = new Point2D(x + width / 2, y + height / 2);
-        this.angle = angle;
-        this.rotate(angle);
-        this.fillColor = fillColor;
-    }
-
-    /**
-     * Creates a new instance of GameObject with the given position and size.
-     * Also sets a fill color and angle
-     *
-     * @param x       horizontal position of the rectangle
-     * @param y       vertical position of the rectangle
-     * @param width   width of the rectangle
-     * @param height  height of the rectangle
-     * @param angle   rotation angle of the rectangle
-     * @param texture texture of the rectangle
-     */
-    protected GameObject(double x, double y, double width, double height, double angle, ImagePattern texture) {
-        super(x, y, width, height);
-        center = new Point2D(x + width / 2, y + height / 2);
-        this.angle = angle;
-        this.rotate(angle);
-        this.texture = texture;
-    }
 
     /**
      * Creates a new instance of GameObject with the given position and size.
@@ -147,54 +92,6 @@ public abstract class GameObject extends Rectangle {
 
     }
 
-    /**
-     * Creates a new instance of GameObject with the given position and size.
-     * Also sets a fill color and angle
-     *
-     * @param x              horizontal position of the rectangle
-     * @param y              vertical position of the rectangle
-     * @param width          width of the rectangle
-     * @param height         height of the rectangle
-     * @param angle          rotation angle of the rectangle
-     * @param fillColor      fillColor of the rectangle
-     * @param originIsCenter true if the position should be the center of the shape
-     */
-    protected GameObject(double x, double y, double width, double height, double angle, Color fillColor, boolean originIsCenter) {
-        super(x, y, width, height);
-
-        if (originIsCenter) {
-            move(-width / 2, -height / 2);
-            center = new Point2D(x, y);
-        } else {
-            center = new Point2D(x + width / 2, y + height / 2);
-        }
-        this.angle = angle;
-        this.rotate(angle);
-        this.fillColor = fillColor;
-    }
-
-    /**
-     * Creates a new instance of GameObject with the given position and size.
-     * Also sets a fill color and angle
-     *
-     * @param x              horizontal position of the rectangle
-     * @param y              vertical position of the rectangle
-     * @param width          width of the rectangle
-     * @param height         height of the rectangle
-     * @param angle          rotation angle of the rectangle
-     * @param texture        texture of the rectangle
-     * @param originIsCenter true if the position should be the center of the shape
-     */
-    public GameObject(double x, double y, double width, double height, double angle, ImagePattern texture, boolean originIsCenter) {
-        super(x, y, width, height);
-
-        if (originIsCenter) {
-            move(-width / 2, -height / 2);
-        }
-        this.angle = angle;
-        rotate(angle);
-        this.texture = texture;
-    }
 
     /**
      * calculates the shape
@@ -262,11 +159,18 @@ public abstract class GameObject extends Rectangle {
 
     }
 
+    /**
+     * check if this Gameobject collides with an other Gameobject
+     *
+     * @param other is the other Gameobject
+     * @return if this Objects are colliding
+     */
     public boolean isColliding(GameObject other) {
 
         Shape me = Shape.union(this, this);
         Shape otherShape = Shape.union(other, other);
         Shape intersect = Shape.intersect(me, otherShape);
+
         return intersect.getBoundsInLocal().getWidth() != -1;
 
 
@@ -321,6 +225,11 @@ public abstract class GameObject extends Rectangle {
 
     }
 
+    /**
+     * rotates this object from center
+     *
+     * @param angle is the angle how much do you want to rotate it
+     */
     public void rotate(double angle) {
         this.angle = this.angle + angle % 360;
 

@@ -78,7 +78,7 @@ public class GameModel {
         initializeCheckpoints();
         calcStartPosition();
         setCarToStart();
-        initializeObstacles(10,40,30);
+        newObstacles();
 
 
 
@@ -98,7 +98,7 @@ public class GameModel {
      */
     private Car initializeCar() {
         //initialize a new car and give it the init values
-        car = new Car(0,0,35.3,17.3,0,30,130,-50);
+        car = new Car(0, 0, 35.3, 17.3, 0, 30, 130, 50);
         car.savePosition();
         return car;
     }
@@ -185,14 +185,19 @@ public class GameModel {
                     obstacles.add(tmp);
                 }
             }
-            if(checkpoints != null){
-                for (Checkpoint checkpoint: checkpoints
-                     ) {
-                    if(tmp.isColliding(checkpoint)){
-                        obstacles.remove(tmp);
+            if (racetrail.isOnTrail(tmp.center())) {
+                if (checkpoints != null) {
+                    for (Checkpoint checkpoint : checkpoints
+                            ) {
+                        if (tmp.isColliding(checkpoint)) {
+                            obstacles.remove(tmp);
+                        }
                     }
                 }
+            } else {
+                obstacles.remove(tmp);
             }
+
 
 
         }
@@ -347,20 +352,22 @@ public class GameModel {
 
 
     public boolean collisionDetect() {
+        if (!(obstacles == null)) {
+            for (Obstacle obstacle : obstacles) {
+                if (obstacle.isColliding(car)) {
+                    if (obstacle.isDamaged(car.getCurrentSpeed())) {
+                        car.setSpeedToZero();
+                        car.setBroken(true);
 
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.isColliding(car)) {
-                if (obstacle.isDamaged(car.getCurrentSpeed())) {
-                    car.setSpeedToZero();
-                    car.setBroken(true);
-
-                }else {
-                    car.setSpeedToZero();
-                    car.setCarToSavedPosition();
+                    } else {
+                        car.setSpeedToZero();
+                        car.setCarToSavedPosition();
+                    }
+                    return true;
                 }
-                return true;
             }
         }
+
         car.savePosition();
         return false;
     }
@@ -407,6 +414,15 @@ public class GameModel {
     public TimeCounter getTimer(){
 
         return timer;
+    }
+
+    /**
+     * for testing
+     *
+     * @param testObstacles are test Obstacles for testing
+     */
+    public void setTestObstacles(ArrayList<Obstacle> testObstacles) {
+        this.obstacles = testObstacles;
     }
 
 

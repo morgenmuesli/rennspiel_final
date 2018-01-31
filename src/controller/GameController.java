@@ -6,10 +6,15 @@ import GameEnum.TimerStates;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.*;
 import view.GameView;
 import view.TimerView;
 
+import javax.print.URIException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class GameController {
@@ -21,6 +26,8 @@ public class GameController {
     private Canvas canvas;
     private GameState state;
     private ArrayList<String> input = new ArrayList<>();
+    private AudioClip audioClip;
+    private Media sound;
 
     private boolean firstRound = true;
 
@@ -29,6 +36,13 @@ public class GameController {
 
 
     private TimerView timerView;
+
+    /**
+     * init GameController
+     *
+     * @param gameModel contains all the logic elements
+     * @param gameView  contains all the show elements
+     */
 
     public GameController(GameModel gameModel, GameView gameView) {
         this.gameView = gameView;
@@ -42,6 +56,11 @@ public class GameController {
         debugFPS = new DebugFPS(gameView.debug);
         timerView = new TimerView(gameView.getTimerPane(), canvas.getWidth() / 2, 30);
         gameView.drawGameObjects(gameModel);
+        try {
+            audioClip = new AudioClip(this.getClass().getResource("/resources/sound/car.mp3").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
 
         //Set up keylistener
@@ -60,12 +79,13 @@ public class GameController {
 
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-
+        //switch between game states
         switch (state) {
             case START:
                 gameView.showStartMenu();
                 break;
             case RACE:
+
 
 
                 gameView.hideStartMenu();
@@ -79,8 +99,12 @@ public class GameController {
                 // checks all relevant keys
 
                 if (input.contains("UP") || input.contains("W")) {
-                    gameModel.getCar().accelerate(timeDifferenceInSeconds);
+                    gameModel.getCar().accelerate(timeDifferenceInSeconds, true);
+
+                    audioClip.play();
+
                 }
+
                 if (input.contains("DOWN") || input.contains("S")) {
                     gameModel.getCar().breakCar(timeDifferenceInSeconds);
                 }
@@ -90,12 +114,16 @@ public class GameController {
                 if (input.contains("RIGHT") || input.contains("D")) {
                     gameModel.getCar().steerCar(timeDifferenceInSeconds);
                 }
-                if (input.contains("TAB")) {
-                    gameView.hideDebugPane();
-                }
-                if (input.contains("R")) {
+
+                if (input.contains("R") || input.contains("BACK_SPACE")) {
                     gameModel.resetGame();
                 }
+                if (input.contains("TAB")) {
+                    gameView.showDebugPane();
+                } else {
+                    gameView.hideDebugPane();
+                }
+
                 break;
             case PAUSE:
                 gameModel.changeTimerState(TimerStates.PAUSE);

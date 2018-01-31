@@ -31,7 +31,7 @@ public class Menu {
         menu.setPrefSize(width, height);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(10);
-        vbox.setStyle("-fx-background-color: rgba(100,100,100,0.5);;");
+        vbox.setStyle("-fx-background-color: rgba(100,100,100,0.5);");
         menu.setCenter(vbox);
 
 
@@ -39,7 +39,7 @@ public class Menu {
         resume = new Button("Fortsetzen");
         resume.setPrefSize(100,40);
         startButton.setPrefSize(100, 40);
-        text = new Text();
+        text = new Text("Willkommen.\nGesteuert wird mit WASD oder Pfeiltasten\n");
         text.setFont(new Font(30));
         text.setFill(Color.BLACK);
         text.setTextAlignment(TextAlignment.CENTER);
@@ -56,6 +56,7 @@ public class Menu {
      *
      * @param time is the time the player needed for the game
      */
+
 
     public void showWinningText(String time) {
         hideResumeButton();
