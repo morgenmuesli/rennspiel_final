@@ -125,9 +125,9 @@ public class GameModel {
         }
 
         checkpoints.get(0).move(0,radY,0);
-        checkpoints.get(1).move(radX + racetrail.getStroke()/2,20,90);
+        checkpoints.get(1).move(radX + racetrail.getStroke() / 2 + 5, 10, 90);
         checkpoints.get(2).move(0,-radY,0);
-        checkpoints.get(3).move(-radX + racetrail.getStroke()/2,20,90);
+        checkpoints.get(3).move(-radX + racetrail.getStroke() / 2 + 5, 10, 90);
         checkpoints.get(4).move(0,radY,0);
 
 

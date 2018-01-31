@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import model.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Contains every GUI element
@@ -97,6 +98,7 @@ public class GameView {
         if(!gamePane.getChildren().contains(timer)){
             gamePane.getChildren().add(timer);
         }
+
     }
 
     public void hideTime(){
@@ -205,14 +207,6 @@ public class GameView {
     public void updateObstacles(ArrayList<Obstacle> obstacles){
         drawObstacles(obstacles);
     }
-
-
-
-
-
-
-
-
 
 
     public Canvas getCanvas() {

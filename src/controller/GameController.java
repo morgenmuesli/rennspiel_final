@@ -40,7 +40,7 @@ public class GameController {
         state = GameState.START;
         gameModel.resizeGameField(canvas.getWidth(), canvas.getHeight());
         debugFPS = new DebugFPS(gameView.debug);
-        timerView = new TimerView(gameView.getTimerPane(), canvas.getWidth()/2, 30);
+        timerView = new TimerView(gameView.getTimerPane(), canvas.getWidth() / 2, 30);
         gameView.drawGameObjects(gameModel);
 
 
@@ -58,9 +58,7 @@ public class GameController {
     public void updateContinuously(double timeDifferenceInSeconds) {
 
 
-
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
 
 
         switch (state) {
@@ -75,7 +73,7 @@ public class GameController {
                 gameModel.updateCar(timeDifferenceInSeconds);
                 gameModel.checkCheckpoint();
 
-                    gameView.updateCheckpoints(gameModel.getCheckpoints());
+                gameView.updateCheckpoints(gameModel.getCheckpoints());
 
 
                 // checks all relevant keys
@@ -116,18 +114,17 @@ public class GameController {
                 break;
 
 
-
         }
 
 
-         debugFPS.updateVals(timeDifferenceInSeconds, gameModel);
-
+        debugFPS.updateVals(timeDifferenceInSeconds, gameModel);
 
 
         gameModel.getTimer().updateTime(timeDifferenceInSeconds);
 
 
         timerView.drawTime(gameModel.getTimer());
+
         setGameState();
 
 
@@ -137,12 +134,12 @@ public class GameController {
     /**
      * check if the player has won or loose and sets the GameState
      */
-    private void setGameState(){
+    private void setGameState() {
         if (gameModel.isFinish()) {
 
             state = GameState.WINNING;
         }
-        if(gameModel.hasLost()){
+        if (gameModel.hasLost()) {
             state = GameState.LOOSING;
         }
 
@@ -187,19 +184,18 @@ public class GameController {
         setUpResumeButton();
 
 
-
     }
 
     /**
      * sets the function of the start button
      */
 
-    private void setUpStartButton(){
+    private void setUpStartButton() {
         gameView.getMenu().getStartButton().setOnMouseClicked(event -> {
             state = GameState.RACE;
             gameModel.resetGame();
             gameView.hideStartMenu();
-            if(!firstRound){
+            if (!firstRound) {
                 gameModel.newObstacles();
             }
             firstRound = false;
@@ -211,7 +207,7 @@ public class GameController {
     /**
      * sets the function of the resume button
      */
-    private void setUpResumeButton(){
+    private void setUpResumeButton() {
         gameView.getMenu().getResume().setOnMouseClicked(event -> {
             state = GameState.RACE;
             gameModel.changeTimerState(TimerStates.START);
