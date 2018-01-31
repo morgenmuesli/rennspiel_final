@@ -1,14 +1,12 @@
 package model;
 
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 
 
-
-public class Checkpoint extends Box{
+public class Checkpoint extends GameObject {
 
 
 
@@ -66,7 +64,7 @@ public class Checkpoint extends Box{
      * @param carShape is the shape of the car to check if they intersect
      * @return if car is colliding with the line
      */
-    public boolean getIsReached(Box carShape) {
+    public boolean getIsReached(GameObject carShape) {
 
         return boundingBoxCollision(carShape);
     }

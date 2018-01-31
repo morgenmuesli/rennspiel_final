@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 
 
-public class GameField extends Box{
+public class GameField extends GameObject {
 
     private Image texture = new Image("resources/images/grass_texture.png");
     private Color color;

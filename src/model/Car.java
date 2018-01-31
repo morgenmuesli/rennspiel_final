@@ -3,7 +3,6 @@ package model;
 import GameEnum.Subsoil;
 
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 
@@ -11,7 +10,7 @@ import javafx.scene.paint.ImagePattern;
 /**
  * Class car represents the race-car in the race game.
  */
-public class Car extends Box{
+public class Car extends GameObject {
     private double currentSpeed; //real speed
     private double virtualSpeed; //speed without resistance
 
@@ -32,16 +31,16 @@ public class Car extends Box{
     private final double MASS = 1000;
 
 
-
     private boolean broken;
     private Subsoil subsoil;
 
 
-    private Image texture = new Image("resources/images/car.png");;
+    private Image texture = new Image("resources/images/car.png");
+    ;
     private Image brokenTexture = new Image("resources/images/explode.png");
 
-    public Car(double x, double y, double width, double height, double currentAngle,double accelerateConst,  double maxSpeed, double maxBackSpeed) throws IllegalArgumentException{
-        super(x,y,width,height,currentAngle);
+    public Car(double x, double y, double width, double height, double currentAngle, double accelerateConst, double maxSpeed, double maxBackSpeed) throws IllegalArgumentException {
+        super(x, y, width, height, currentAngle);
         setFill(new ImagePattern(texture));
         startAngle = currentAngle;
 
@@ -55,8 +54,6 @@ public class Car extends Box{
 
         broken = false;
         currentSpeed = 0;
-
-
 
 
     }
@@ -88,11 +85,11 @@ public class Car extends Box{
      * @param timeDifferenceInSeconds is the time between two frames
      */
 
-    public void breakCar(double timeDifferenceInSeconds){
+    public void breakCar(double timeDifferenceInSeconds) {
         virtualSpeed = currentSpeed;
-        if(virtualSpeed <= 0){
+        if (virtualSpeed <= 0) {
             accelerate(-timeDifferenceInSeconds);
-        }else {
+        } else {
             virtualSpeed = virtualSpeed - breakConst * timeDifferenceInSeconds;
         }
     }
@@ -102,8 +99,6 @@ public class Car extends Box{
      * Calculates Speed reduction
      */
     private void calculatesRealSpeed(double timeDifferenceInSeconds) {
-
-
 
 
         double rollingresistance;
@@ -126,13 +121,12 @@ public class Car extends Box{
             virtualSpeed -= deccel;
         } else if (virtualSpeed < -deccel) {
             virtualSpeed += deccel;
-        }else {
+        } else {
             virtualSpeed = 0;
         }
 
         currentSpeed = virtualSpeed;
     }
-
 
 
     /**
@@ -152,7 +146,7 @@ public class Car extends Box{
     }
 
 
-    public void healCar(){
+    public void healCar() {
         broken = false;
         setFill(new ImagePattern(texture));
     }
@@ -188,29 +182,20 @@ public class Car extends Box{
      */
     public void setBroken(boolean broken) {
         this.broken = broken;
-        if(broken){
+        if (broken) {
             setFill(new ImagePattern(brokenTexture));
         }
     }
 
 
-
-
-
-
-
-
-
-
-
-
     /**
      * relocate the car with the new Car postion
+     *
      * @param x is the new x Position
      * @param y is the new y Position
      */
     public void setCarLocation(double x, double y) {
-        setPosition(x,y);
+        setPosition(x, y);
 
     }
 
@@ -218,8 +203,8 @@ public class Car extends Box{
      * used to steer the car and changed the curentAngle
      * if the user want to drive left -> steeringAngle < 0
      * if the user want to drive right -> steeringAngle > 0
-     * @param timeDifferenceInSeconds is the time difference between two frames
      *
+     * @param timeDifferenceInSeconds is the time difference between two frames
      */
     public void steerCar(double timeDifferenceInSeconds) {
         double steeringAngle = timeDifferenceInSeconds * steeringAngleInSeconds;
@@ -248,9 +233,8 @@ public class Car extends Box{
             double dy = (Math.sin(Math.toRadians(getAngle())) * reachedDistance);
             double dx = (Math.cos(Math.toRadians(getAngle())) * reachedDistance);
 
-            move(dx,dy);
+            move(dx, dy);
         }
-
 
 
     }
@@ -259,7 +243,7 @@ public class Car extends Box{
      * saves the Current Position
      */
 
-    public void savePosition(){
+    public void savePosition() {
         positionNotCollided = getTranslation();
     }
 
@@ -267,15 +251,13 @@ public class Car extends Box{
      * resets the car to the last saved Position
      */
 
-    public void setCarToSavedPosition(){
-        setCarLocation(positionNotCollided.getX(),positionNotCollided.getY());
+    public void setCarToSavedPosition() {
+        setCarLocation(positionNotCollided.getX(), positionNotCollided.getY());
     }
 
-    public void resetCarAngle(){
+    public void resetCarAngle() {
         setAngle(startAngle);
     }
-
-
 
 
 }

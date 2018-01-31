@@ -3,12 +3,11 @@ package model;
 
 
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 
-public class Obstacle extends Box{
+public class Obstacle extends GameObject {
 
     private Point2D position;
 
